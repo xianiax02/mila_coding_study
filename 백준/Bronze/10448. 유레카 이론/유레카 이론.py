@@ -2,6 +2,7 @@ trinums=[]
 
 for i in range(1,46):
 	trinums.append((i**2+i)/2)
+trinums=set(trinums)
 iterations=int(input())
 givens=[]
 for i in range(iterations):
