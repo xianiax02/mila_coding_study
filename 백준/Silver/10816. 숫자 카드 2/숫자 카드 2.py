@@ -1,17 +1,15 @@
 import sys
-deck={}
+from collections import Counter
+
 n=int(sys.stdin.readline().strip())
 numlist=list(map(int,sys.stdin.readline().strip().split(' ')))
-for num in numlist:
-    if num in deck:
-        deck[num]+=1
-    else:
-        deck[num]=1
+deck=Counter(numlist)
+
 
 m=int(sys.stdin.readline().strip())
 checknumlist=list(map(int,sys.stdin.readline().strip().split(' ')))
+result=[]
 for checknum in checknumlist:
-    if checknum in deck:
-        sys.stdout.write(str(deck[checknum])+' ')
-    else:
-        sys.stdout.write('0 ')
+	result.append(str(deck[checknum]))    
+
+print(' '.join(result))
