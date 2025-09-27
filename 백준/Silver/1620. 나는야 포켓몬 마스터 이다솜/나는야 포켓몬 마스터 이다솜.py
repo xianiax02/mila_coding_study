@@ -10,8 +10,8 @@ for i in range(1,n+1):
 
 for j in range(m):
     data=sys.stdin.readline().strip()
-    try:
+    if data.isdigit():
         datanum=int(data)
         sys.stdout.write(numdict[datanum-1]+'\n')
-    except ValueError:
+    else:
         sys.stdout.write(str(namedict[data])+'\n')
