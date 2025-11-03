@@ -1,34 +1,31 @@
-import sys
 from collections import deque
-n=int(sys.stdin.readline().strip())
-datas=deque([])
+import sys
+input=sys.stdin.readline
+n=int(input().strip())
+queue=deque()
+answer=[]
 count=1
-prints=[]
-
-NO=False
-for i in range(n):
-    num=int(sys.stdin.readline().strip())
-    if count<=num: #count가 넘보다 작다==넘을 출력하려면 카운트를 증가시켜 계속 넣고 출력
-        while count!=num+1:
-            datas.append(count)
-            prints.append('+')
-            count+=1
-        datas.pop()
-        prints.append('-')
+iteration=0
+stop=False
+while iteration<n and not stop:
+    num=int(input().strip())
+    if not queue or queue[-1]<num:
+        for i in range(count,num+1):
+            queue.append(i)
+            answer.append('+')
+        count=num+1
+        queue.pop()
+        answer.append('-')
+    elif queue[-1]==num:
+        queue.pop()
+        answer.append('-')
     else:
-        if datas:
-            if datas[-1]==num:
-                datas.pop()
-                prints.append('-')
-            else:
-                NO=True
-                break
-        else:
-            NO=True
-            break
-            
-if not NO:
-    for i in prints:
-        sys.stdout.write(i+'\n')
-else:
+        stop=True
+    iteration+=1
+
+if stop:
     sys.stdout.write('NO')
+else:
+    sys.stdout.write("\n".join(answer))
+        
+        
