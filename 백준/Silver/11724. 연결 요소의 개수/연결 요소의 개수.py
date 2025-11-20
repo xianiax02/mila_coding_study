@@ -1,47 +1,30 @@
 import sys
+sys.setrecursionlimit(10000)
 from collections import deque
+input=sys.stdin.readline
+n,m=map(int,input().strip().split())
+graph=[[] for _ in range(n+1)] #어차피 0노드는 아무것도 안넣으면 되니 단순 n+1로 처리함. 
+visited=[1]+[0]*n #노드가 0부터가 아니라 1부터 시작하므로 인덱싱에 주의해서 1 based index로 설정함. 초기에 0으로 설정하면 unvisited로 간주해서 카운트하기 때문에 조심. 
+ms=deque()
+for _ in range(m):
+    a,b=map(int,input().strip().split())
+    graph[a].append(b)
+    graph[b].append(a)
+def DFS(start):
+    visited[start]=True
+    for i in graph[start]:
+        if not visited[i]:
+            DFS(i)
+cnt=0
+for node in range(1,n+1):
+    if not visited[node]:
+        DFS(node)
+        cnt+=1
 
-# sys.stdin.readline()을 사용하기 위해 import
-# input = sys.stdin.readline # 이렇게 맨 위에 선언해두면 기존 코드를 바꿀 필요 없이 편리합니다.
+print(cnt)
 
-sys.setrecursionlimit(10**6)
 
-# input() 대신 sys.stdin.readline() 사용
-N, M = map(int, sys.stdin.readline().split()) 
-graph = [[] for _ in range(N + 1)]
+#쉬운 구현법
 
-for _ in range(M):
-    # 여기도 마찬가지로 변경
-    u, v = map(int, sys.stdin.readline().split()) 
-    graph[u].append(v)
-    graph[v].append(u)
 
-visited = [False] * (N + 1)
 
-def bfs(start_node):
-    queue = deque([start_node])
-    visited[start_node] = True
-    
-    while queue:
-        current_node = queue.popleft()
-        for neighbor in graph[current_node]:
-            if not visited[neighbor]:
-                visited[neighbor] = True
-                queue.append(neighbor)
-
-# 이 DFS 함수는 현재 코드에서 사용되고 있지는 않지만, 로직은 올바릅니다.
-def dfs(start_node):
-    visited[start_node] = True
-    for neighbor in graph[start_node]:
-        if not visited[neighbor]:
-            dfs(neighbor)
-
-component_count = 0
-
-for i in range(1, N + 1):
-    if not visited[i]:
-        # 새로운 연결 요소를 발견하면 BFS(너비 우선 탐색) 실행
-        bfs(i) 
-        component_count += 1
-
-print(component_count)
