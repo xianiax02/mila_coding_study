@@ -1,27 +1,19 @@
 import sys
 input=sys.stdin.readline
-eq=input().strip()
-numbers=[]
-symbols=['+'] #처음 숫자는 무조건 양수
-startindex=0
+eq=input().strip().split('-')
+numbers=[0]*len(eq)
 for i in range(len(eq)):
-    if eq[i]=='+' or eq[i]=='-' :
-        #if i == startindex:
-         #   numbers.append()
-        numbers.append(int(eq[startindex:i]))
-        symbols.append(eq[i])
-        startindex=i+1
-    elif i==len(eq)-1:
-        numbers.append(int(eq[startindex:]))
-        symbols.append(eq[i])
-ans=sum(numbers)
-if '-' in symbols:
-    firstsub=symbols.index('-')
-    addition=sum(numbers[:firstsub])
-    subtraction=sum(numbers[firstsub:])
-    ans=addition-subtraction
+    temp_sum = sum(map(int, eq[i].split('+')))
+    numbers[i]=(temp_sum)
+
+addition=numbers[0]
     
+if len(numbers)!=1:
+    
+    subtraction=sum(numbers[1:])
+    ans=addition-subtraction
+else:
+    ans=addition
 
 print(ans)
-
-        
+    
