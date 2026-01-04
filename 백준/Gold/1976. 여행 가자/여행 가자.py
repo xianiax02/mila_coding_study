@@ -13,8 +13,8 @@ def union(a,b):
     a=find(a)
     b=find(b)
     if a!=b:
-        parent[a]=min(a,b)
-        parent[b]=min(b,a)
+        parent[max(a,b)]=min(a,b)
+
     
 #실제는 1부터 시작이지만 0부터 시작인걸로 간주-> 이후 여행 계획 입력 받을때 -1해서 비교
 for currentnode in range(n): #윗대각행렬 성분에 대해서만 UNION 적용
