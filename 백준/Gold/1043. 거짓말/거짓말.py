@@ -38,15 +38,10 @@ else:
     
     noliegroup=find(truth[1]) #root node를 찾을때는 반드시 find을 거쳐야함.   
     for i in range(m):
-        '''
-        if people[partylog[i][0]]==noliegroup:
+       
+        if find(partylog[i][0])==noliegroup:
             cnt-=1
-            '''
-        for member in partylog[i]:
-            root=find(member)
-            if root==noliegroup:
-                cnt-=1
-                break
+
 
     print(str(cnt))
     
