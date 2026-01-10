@@ -16,9 +16,8 @@ for _ in range(m):
 for k in range(1,n+1):
     for s in range(1,n+1):
         for e in range(1,n+1):
-            if graph[s][k] and graph[k][e]: #중간에 공통으로 아는 사람이 있어야 이어진다. 
-                graph[s][e]=min(graph[s][e],graph[s][k]+graph[k][e]) #min을 쓰기 때문에 inf도입, 그리고 min이 있어야 불필요하게 아는 사람 돌려서 만나는 것 방지
-                graph[e][s]=graph[s][e]
+            graph[s][e]=min(graph[s][e],graph[s][k]+graph[k][e]) #min을 쓰기 때문에 inf도입, 그리고 min이 있어야 불필요하게 아는 사람 돌려서 만나는 것 방지
+
 
 #별도 배열 선언하기 힘드니 안쓰는 제로 패딩 0열에 케빈베이컨 수를 저장하자.
 for i in range(1,n+1):
