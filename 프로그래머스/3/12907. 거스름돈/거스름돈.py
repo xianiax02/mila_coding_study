@@ -9,6 +9,7 @@ def solution(n, money):
     for i in range(1,m):
         coin=money[i]
         for j in range(n+1):
+            
             d[i][j]=(d[i-1][j]+d[i][j-coin])%MOD
     answer = d[m-1][n]
     return answer
