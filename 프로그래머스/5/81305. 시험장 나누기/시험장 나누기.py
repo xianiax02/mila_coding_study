@@ -30,11 +30,8 @@ def solution(k, num, links):
             postorder(links[v][1],L,groupsize)
             r_sum=groupsize[links[v][1]]
         if l_sum+r_sum+num[v]>L:
-            if l_sum>=r_sum and r_sum+num[v]<=L:
-                groupsize[v]=r_sum+num[v]
-                cnt+=1
-            elif l_sum<r_sum and l_sum+num[v]<=L:
-                groupsize[v]=l_sum+num[v]
+            if min(l_sum,r_sum)+num[v]<=L:
+                groupsize[v]=min(l_sum,r_sum)+num[v]
                 cnt+=1
             else:
                 groupsize[v]=num[v]
