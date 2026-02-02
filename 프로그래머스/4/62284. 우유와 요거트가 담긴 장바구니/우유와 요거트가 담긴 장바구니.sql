@@ -1,0 +1,12 @@
+-- 코드를 입력하세요
+SELECT DISTINCT CART_ID
+FROM CART_PRODUCTS A
+WHERE EXISTS (SELECT 1
+             FROM CART_PRODUCTS B
+             WHERE A.CART_ID=B.CART_ID
+             AND B.NAME='Milk')
+AND EXISTS ((SELECT 1
+             FROM CART_PRODUCTS C
+             WHERE A.CART_ID=C.CART_ID
+             AND C.NAME='Yogurt'))
+ORDER BY CART_ID;
