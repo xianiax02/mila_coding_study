@@ -2,7 +2,7 @@ from itertools import combinations
 from bisect import bisect_left
 def solution(dice):
     answer = []
-    maxwin=0
+    maxwin=-1
     n=len(dice)
     combs=list(combinations([i for i in range(1,n+1)],n//2)) #a가 뽑는 주사위 경우의 수
     for acomb in combs:
