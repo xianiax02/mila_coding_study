@@ -1,15 +1,9 @@
 def solution(routes):
-    n=len(routes)
-    visited=[False]*n
-    cnt=0
+    answer = 0
     routes.sort(key=lambda x:x[1])
-    for i, route in enumerate(routes):
-        if not visited[i]:
-            camera=route[-1]
-            cnt+=1
-            p=i
-            while p<n and routes[p][0]<=camera<=routes[p][1]:
-                visited[p]=True
-                p+=1
-    answer = cnt
+    camera=-30001
+    for route in routes:
+        if camera<route[0]:
+            camera=route[1]
+            answer+=1 
     return answer
