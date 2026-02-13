@@ -1,19 +1,18 @@
-from queue import PriorityQueue
 import sys
 input=sys.stdin.readline
-n=int(input().strip())
-pq=PriorityQueue()
-#data= (endtime,starttime)
+n=int(input())
+meetings=[]
 for _ in range(n):
-    starttime,endtime=map(int,input().split())
-    pq.put((endtime,starttime))
-cnt=0
-oldend=0
-while not pq.empty():
-    newend,newstart=pq.get()
-    if oldend<=newstart:
-        cnt+=1
-        oldend=newend
+    meetings.append(list(map(int,input().split())))
+
+meetings.sort(key=lambda x: (x[1],x[0]))  #종료시간으로 정렬하기
+count=0
+time=0
+for meeting in meetings:
+    start,end=meeting
+    if start>=time:
+        count+=1
+        time=end #완료시점으로 넘어감.
 
 
-print(cnt)
+print(count)
