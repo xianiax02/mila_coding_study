@@ -1,13 +1,15 @@
 from collections import deque
-def solution(number, k):
-    mq=deque()
-    n=len(number)
+def solution(numbers, k):
+    numbers=[int(x) for x in numbers]
     cnt=0
-    for num in number:
-        while mq and int(mq[-1])<int(num) and cnt<k :
+    mq=deque()
+    n=len(numbers)
+    for number in numbers:
+        while mq and mq[-1]<number and cnt<k:
             mq.pop()
             cnt+=1
-        if (n-k)>len(mq):
-            mq.append(num)
-    answer=''.join(mq)
-    return str(int(answer))
+        mq.append(number)
+    while len(mq)>n-k:
+        mq.pop()
+    answer = ''.join([str(x) for x in list(mq)])
+    return answer
