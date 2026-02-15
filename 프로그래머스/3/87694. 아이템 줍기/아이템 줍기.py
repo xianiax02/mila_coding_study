@@ -1,29 +1,30 @@
 from collections import deque
 def solution(rectangle, characterX, characterY, itemX, itemY):
-    dx,dy=[-1,0,1,0],[0,-1,0,1]
-    visited=[[0]*101 for _ in range(101)]
+    di=[-1,0,1,0]
+    dj=[0,-1,0,1]
     maps=[[0]*101 for _ in range(101)]
-    for (nx,ny,xx,xy) in rectangle:
-        for x in range(2*nx,2*(xx)+1):
-            for y in range(2*ny,2*(xy)+1):
-                maps[x][y]=1
-    for (nx,ny,xx,xy) in rectangle:
-        for x in range(2*(nx)+1,2*(xx)):
-            for y in range(2*(ny)+1,2*(xy)):
-                maps[x][y]=0
+    visited=[[0]*101 for _ in range(101)]
+    for rect in rectangle:
+        lbx,lby,rux,ruy=rect
+        for i in range(2*lbx,2*(rux)+1):
+            for j in range(2*lby,2*(ruy)+1):
+                maps[i][j]=1
+    for rect in rectangle:
+        lbx,lby,rux,ruy=rect
+        for i in range(2*lbx+1,2*(rux)):
+            for j in range(2*lby+1,2*(ruy)):
+                maps[i][j]=0
     mq=deque()
     mq.append((2*characterX,2*characterY))
+    visited[2*characterX][2*characterY]=1
     while mq:
-        cx,cy=mq.popleft()
-        if (cx,cy)==(2*itemX,2*itemY):
+        ci,cj=mq.popleft()
+        if (ci,cj)==(2*itemX,2*itemY):
             break
-        for d in range(4):
-            nx,ny=cx+dx[d],cy+dy[d]
-            if (nx,ny)==(2*characterX,2*characterY):
-                continue
-            if (-1<nx<101 and -1<ny<101) and (not visited[nx][ny]) and (maps[nx][ny]==1):
-                visited[nx][ny]=visited[cx][cy]+1
-                mq.append((nx,ny))
-    
-    answer = visited[2*itemX][2*itemY]//2
+        for ddi,ddj in zip(di,dj):
+            ni,nj=ci+ddi,cj+ddj
+            if (-1<ni<101) and (-1<nj<101) and not visited[ni][nj] and maps[ni][nj]:
+                visited[ni][nj]=visited[ci][cj]+1
+                mq.append((ni,nj))        
+    answer = (visited[2*itemX][2*itemY]-1)//2
     return answer
