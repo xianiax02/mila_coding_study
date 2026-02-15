@@ -26,15 +26,15 @@ def solution(play_time, adv_time, logs):
     firstcount=0
     for p in range(adv_time):
         firstcount+=plays[p]
-    cumuls[0]=firstcount
+    cumul=firstcount
     p1=0
     p2=p1+adv_time
     maxval,maxstart=firstcount,0
     for p1 in range(1,n+1):
         p2=p1+adv_time-1
-        cumuls[p1]=cumuls[p1-1]-plays[p1-1]+plays[p2]
-        if cumuls[p1]>maxval:
-            maxval=cumuls[p1]
+        cumul=cumul-plays[p1-1]+plays[p2]
+        if cumul>maxval:
+            maxval=cumul
             maxstart=p1  
     h,m,s=[maxstart//3600,(maxstart%3600)//60,maxstart%60]    
     answer =f"{h:02d}:{m:02d}:{s:02d}"
