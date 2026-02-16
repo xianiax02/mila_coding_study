@@ -12,8 +12,6 @@ for (nw,nv) in things:
     for w,v in d.items():
         new_d[w]=v
     for w,v in d.items():
-        if nw<=k:
-            new_d[nw]=max(nv,d.get(nw,0))
         if w+nw<=k:
             new_d[w+nw]=max(d.get(w+nw,0),d.get(w,0)+nv)
     d=new_d
