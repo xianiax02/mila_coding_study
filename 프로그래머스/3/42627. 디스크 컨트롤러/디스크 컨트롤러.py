@@ -1,23 +1,26 @@
 import heapq
 def solution(jobs):
-    jobs.sort(key= lambda x:x[0])
-    mq=[]
+    waitlist=[]
+    joblist=[]
     n=len(jobs)
     returntime=[0]*n
+    for jobnum,job in enumerate(jobs):
+        rt,st=job #requesttime,spendtime
+        joblist.append((st,rt,jobnum))
+    joblist.sort(key=lambda x: x[1])
     time=0
-    p=0
-    taskdone=0
     cnt=0
+    p=0
+    workdone=0
     while cnt<n:
-        while p<n and time==jobs[p][0]: #if currenttime is over next requested time #두개가 동시에들어오는 경우 고려 못함, if가 아니라 while
-            heapq.heappush(mq,(jobs[p][::-1]+[p])) #add the tasknum in the list #우선순위 설정 놓침
+        while p<n and time>=joblist[p][1]:
+            heapq.heappush(waitlist,joblist[p])
             p+=1
-        if time>=taskdone:
-            if mq:
-                ctasktime,crequesttime,ctasknum=heapq.heappop(mq)
-                taskdone=time+ctasktime
-                returntime[ctasknum]=taskdone-crequesttime
-                cnt+=1
+        if waitlist and workdone<=time:
+            st,rt,jobnum=heapq.heappop(waitlist)
+            cnt+=1
+            workdone=time+st
+            returntime[jobnum]=workdone-rt
         time+=1
-    answer = int(sum(returntime)/n)
+    answer = sum(returntime)//n
     return answer
