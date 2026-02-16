@@ -13,14 +13,17 @@ def solution(jobs):
     p=0
     workdone=0
     while cnt<n:
-        while p<n and time>=joblist[p][1]:
+        while p<n and time>=joblist[p][1]: #실수
             heapq.heappush(waitlist,joblist[p])
             p+=1
-        if waitlist and workdone<=time:
+        if waitlist:
             st,rt,jobnum=heapq.heappop(waitlist)
             cnt+=1
-            workdone=time+st
-            returntime[jobnum]=workdone-rt
-        time+=1
+            time+=st #실수
+            returntime[jobnum]=time-rt
+        else:
+            if p<n:
+                time=joblist[p][1]
+        
     answer = sum(returntime)//n
     return answer
