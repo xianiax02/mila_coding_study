@@ -1,46 +1,39 @@
-from bisect import bisect_left
-#최대 제출 횟수+1=최대라운드 수=최대 쌍 개수+1
+import heapq
 def solution(coin, cards):
-    answer = 0
     n=len(cards)
-    pointer=n//3
-    pair=[0]*n
-    used=[False]*n
-    for i in range(n):
-        pair[i]=cards.index(n+1-cards[i])
-    for p in range(pointer+2,n+1,2):
-        requiredcoin=float('inf')
-        roundok=False
-        #지금까지 뽑았던 수들 포함해서 cost 0으로 이번 라운드 넘길 수 있나?
-        for i in range(pointer):
-            if pair[i]<pointer and not used[i]:
-                requiredcoin=0
-                used[i]=True
-                used[pair[i]]=True
-                roundok=True
-                break
-        if not roundok:
-            for i in range(pointer,p):
-                if pair[i]<pointer and not used[i]:
-                    requiredcoin=1
-                    if coin>=1:
-                        used[i]=True
-                        used[pair[i]]=True
-                        roundok=True
-                        coin-=1
-                        break
-        if not roundok:
-            for i in range(pointer,p):
-                if pointer<=pair[i]<p and not used[i]:
-                    requiredcoin=2
-                    if coin>=2:
-                        used[i]=True
-                        used[pair[i]]=True
-                        roundok=True
-                        coin-=2
-                        break
-        if roundok:
-            answer+=1
+    rounds,pairs= 1,0
+    chances=[]
+    pset,aset=set(cards[:n//3]),set()
+    def add_pair(i,j): #i인덱스부터 j인덱스까지 존재하는 모든 pair 을 cost와 함께 chances에 추가
+        nonlocal pairs
+        for idx in range(i,j+1):
+            pair1,pair2=min(cards[idx],n+1-cards[idx]),max(cards[idx],n+1-cards[idx])
+            if (pair1 in aset) and (pair2 in aset):
+                 #내가 이미 있는 패는 pairs에 넣어서 집합연산에서 제외한다. 
+                heapq.heappush(chances,(2,pair1,pair2))
+                aset.discard(pair1)
+                aset.discard(pair2)
+            elif ((pair1 in aset) and (pair2 in pset)) or ((pair2 in aset) and (pair1 in pset)):
+                heapq.heappush(chances,(1,pair1,pair2))
+                aset.discard(pair1)
+                aset.discard(pair2) #이미 넣은 pair는 더이상 검출 못하게.
+            elif (pair1 in pset) and (pair2 in pset):
+                pairs+=0.5
+            else: continue
+    add_pair(0,n//3-1)
+    for idx in range(n//3,n,2):
+        aset|=set(([cards[idx],cards[idx+1]]))
+        add_pair(idx,idx+1)
+        if pairs<1:
+            if chances:
+                cost,pair1,pair2=heapq.heappop(chances)
+                if coin>=cost:
+                    coin-=cost #pairs 1추가하고 바로 삭제하므로 pairs 조작 x
+                    rounds+=1
+                else:
+                    return rounds
+            else: return rounds
         else:
-            break
-    return answer+1
+            pairs-=1
+            rounds+=1
+    return rounds
