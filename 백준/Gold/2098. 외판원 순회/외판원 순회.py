@@ -1,25 +1,25 @@
 import sys
-n=int(input())
 input=sys.stdin.readline
-w=[] #0-padding
-D=[[0 for j in range(1<<16)] for i in range(16) ]
+sys.setrecursionlimit(10**5)
+n=int(input())
+wm=[]
+inf=float('inf')
+d=[[-1]*(n) for _ in range(2**n)]
 for _ in range(n):
-    weights=list(map(int,input().split()))
-    w.append(weights)
+    wm.append(list(map(int,input().split())))
 
-def tsp(c,v):
-    if v==(1<<n)-1:
-        if w[c][0]==0:
-            return float("inf")
-        else:
-            return w[c][0]
-    if D[c][v]!=0:
-        return D[c][v]
-    min_val=float("inf")
-    for i in range(0,n):
-        if (v&(1<<i))==0 and w[c][i]!=0:
-            min_val=min(min_val,tsp(i,v|(1<<i))+w[c][i])
-    D[c][v]=min_val
-    return D[c][v]
-    
-print(tsp(0,1))
+start=0 #0노드에서 출발
+def dfs(state,current):
+    if state==2**n-1:
+        return wm[current][0] if wm[current][0] else inf
+    if d[state][current]!=-1: #만약 채우져있으면 반환
+        return d[state][current]
+    tmp=inf
+    for j in range(n):
+        if wm[current][j] and not state&(1<<j): #안채워진 j와 연결된 j에 대해서 모든 j를 돌아보며 state,current 값을 채워감.
+            tmp=min(dfs(state|1<<j,j)+wm[current][j],tmp)
+    d[state][current]=tmp
+    return d[state][current ]
+
+answer=dfs(1,0)
+print(answer)
