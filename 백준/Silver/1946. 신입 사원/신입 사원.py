@@ -7,7 +7,7 @@ for _ in range(t):
     cnt=0
     for _ in range(n):
         lst.append(tuple(map(int,input().split())))
-    lst.sort(key=lambda x:(x[0],-x[1]))
+    lst.sort()
     maxs1,mins2=0,float('inf')
     for i in range(len(lst)):
         if lst[i][0]>maxs1 and lst[i][1]>mins2:
