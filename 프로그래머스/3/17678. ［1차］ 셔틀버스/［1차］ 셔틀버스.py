@@ -14,7 +14,6 @@ def solution(n, t, m, timetable):
                 answer=bustime
             else:
                 answer=timetable[pos-1]-1
-        print(bustime,inthisbus,buscnt,pos)
         bustime+=t
         buscnt+=1
     answer = f'{answer//60:02d}:{answer%60:02d}'
