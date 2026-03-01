@@ -9,4 +9,4 @@ for num in numlist:
     else :
         dp[pos]=num
 
-print(len(dp))
+print(len(dp)) 
