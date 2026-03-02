@@ -1,26 +1,26 @@
 import sys
-input=sys.stdin.readline
 sys.setrecursionlimit(10**6)
+input=sys.stdin.readline
 n=int(input())
-dp=[[-1]*2 for _ in range(1+n)]
-graph=[[] for _ in range(1+n)]
 population=[0]+list(map(int,input().split()))
 visited=[False]*(1+n)
+graph=[[] for _ in range(n+1)]
+dp=[[0,0] for _ in range(n+1)]
 for _ in range(n-1):
     a,b=map(int,input().split())
-    graph[a].append(b) #큰 번호가 자식이 되도록 단방향으로 설정
+    graph[a].append(b)
     graph[b].append(a)
 
-def filldp(x):
+def search(x):
     visited[x]=True
-    a,b=0,population[x] #0,1 값
-    for c in graph[x]:
-        if not visited[c]:
-            tmp=filldp(c)
-            a+=max(tmp[1],tmp[0])
-            b+=tmp[0] #자식은 우수마을이 아니어야함.
-    dp[x]=[a,b]
-    return [a,b]
-
-filldp(1)
-print(max(dp[1]))
+    tmp0,tmp1=0,population[x]
+    for nxt in graph[x]:
+        if not visited[nxt]: #방문하지 않은 이웃==자식들
+            child=search(nxt)
+            tmp0+=max(child)
+            tmp1+=child[0]
+    dp[x]=[tmp0,tmp1]
+    return [tmp0,tmp1]
+            
+search(1)
+print(max(dp[1]))            
