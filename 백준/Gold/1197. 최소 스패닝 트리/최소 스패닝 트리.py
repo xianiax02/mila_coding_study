@@ -1,37 +1,36 @@
 import sys
-sys.setrecursionlimit(10**7)
+sys.setrecursionlimit(10**6)
+import heapq
 input=sys.stdin.readline
 v,e=map(int,input().split())
-graph=[]
-for _ in range(e):
-    a,b,w=tuple(map(int,input().split()))
-    graph.append((w,a,b))
-rootgraph=[i for i in range(v+1)] #0-padding 까먹음
-graph.sort()
-result=[]
+edgelist=[]
+parent=[i for i in range(v+1)]
 def find(x):
-    if rootgraph[x]==x:
+    if parent[x]==x:
         return x
-    rootgraph[x]=find(rootgraph[x])
-    return rootgraph[x]
-
+    parent[x]=find(parent[x])
+    return parent[x]
 def union(a,b):
-    roota=find(a)
-    rootb=find(b)
-    rootgraph[max(roota,rootb)]=min(roota,rootb)
+    a=find(a)
+    b=find(b)
+    if a!=b:
+        parent[max(a,b)]=min(a,b)
 
-for edge in graph:
-    w,a,b=edge
-    roota=find(a)
-    rootb=find(b)
-    if roota==rootb:
-        continue
-    else:
+for _ in range(e):
+    a,b,w=map(int,input().split())
+    edgelist.append((w,a,b))
+edgelist.sort()
+answer=0
+cnt=0
+for w,a,b in edgelist:
+    a,b=find(a),find(b)
+    if a!=b:
         union(a,b)
-        result.append(edge)
-
-ans=0
-for edge in result:
-    ans+=edge[0]
-
-print(ans)
+        answer+=w
+        cnt+=1
+        if cnt==v-1:
+            break
+    
+    
+print(answer)
+    
