@@ -1,18 +1,11 @@
-start,end=map(int,input().split())
+m,n=map(int,input().split())
+isprime=[True]*(1+n)
+isprime[0],isprime[1]=False,False
+for num in range(2,int(n**(1/2))+1):
+    if isprime[num]:
+        for target in range(num*2,n+1,num):
+            isprime[target]=False
 
-
-prime=list(range(2,end+1))
-
-prime=[True]*(end-1)
-for num in range(2,int(end**(1/2))+1): #끝을 제곱근으로 바꿔도 될거같은데
-    if prime[num-2]:
-        a=2
-        while num*a<=end:
-            prime[num*a-2]=False
-            a+=1
-
-for num in range(start,end+1):
-    if num==1: #엣지케이스
-        continue
-    if prime[num-2]:
+for num in range(m,n+1):
+    if isprime[num]:
         print(num)
